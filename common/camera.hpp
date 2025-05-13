@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <iostream>
@@ -39,4 +40,3 @@ public:
 	void calculateCameraVectors();
 
 };
-
