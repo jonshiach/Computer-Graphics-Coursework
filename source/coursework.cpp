@@ -97,14 +97,25 @@ int main( void )
     glUseProgram(shaderID);
 
     // Load models
-    Model teapot("../assets/teapot.obj");
+    Model spooky_cauldron("../assets/cauldron.obj");
     Model sphere("../assets/sphere.obj");
+    Model plane("../assets/plane.obj");
 
     // Load the textures
-    teapot.addTexture("../assets/blue.bmp", "diffuse");
+    spooky_cauldron.addTexture("../assets/blue.bmp", "diffuse");
+    plane.addTexture("../assets/bricks_diffuse", "diffuse");
 
     // Use wireframe rendering (comment out to turn off)
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    std::vector<Object> objects;
+    Object object;
+    
+    // cauldron lighting properties
+    spooky_cauldron.ka = 0.2f;
+
+    //send properties to shader
+    glUniform1f(glGetUniformLocation(shaderID, "ka"), spooky_cauldron.ka);
 
     // Render loop
     while (!glfwWindowShouldClose(window))
@@ -141,8 +152,9 @@ int main( void )
         // Send MVP matrix to the vertex shader
         glUniformMatrix4fv(glGetUniformLocation(shaderID, "MVP"), 1, GL_FALSE, &MVP[0][0]);
 
-        // Draw teapot
-        teapot.draw(shaderID);
+        // Draw the witches super spooky cauldron
+        spooky_cauldron.draw(shaderID);
+        //plane.draw(shaderID);
 
         // Swap buffers
         glfwSwapBuffers(window);
@@ -150,7 +162,7 @@ int main( void )
     }
     
     // Cleanup
-    teapot.deleteBuffers();
+    spooky_cauldron.deleteBuffers();
     glDeleteProgram(shaderID);
 
     // Close OpenGL window and terminate GLFW
@@ -191,4 +203,3 @@ void mouseInput(GLFWwindow* window)
     // Calculate camera vectors from the yaw and pitch angles
     camera.calculateCameraVectors();
 }
-
